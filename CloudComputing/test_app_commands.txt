@@ -1,0 +1,12 @@
+##We are using mount to bind the container working directory "/usr/src/app" to our hard drive.
+##The location of hard drive to be binded or mounted will be our current directory "pwd which stands for present working directory" 
+  that the source code resides.
+##The -w parameter will be our working directory.
+##The --rm parameter means automatically delete the container once it's stopped.
+
+docker run --name node-setup -it --mount type=bind,source="D:\Huawei Drive\Development\Cloud\test-demo",target=/usr/src/app -w /usr/src/app --rm node bash
+
+docker run --name test-app --network=test-net --mount type=bind,source="D:\test-demo\test-app",target=/usr/src/app -w /usr/src/app --rm node node index.js
+
+docker run --name test-client -it --network=test-net -p 3000:3000 --mount type=bind,source="D:\test-demo\test-app\test-client",target=/usr/src/app -w /usr/src/app node bash 
+docker run --name test-client -it --network=test-net -p 3000:3000 --mount type=bind,source="D:\test-demo\test-app\test-client",target=/usr/src/app -w /usr/src/app node npm start 

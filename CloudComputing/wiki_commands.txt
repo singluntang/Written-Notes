@@ -1,0 +1,20 @@
+docker volume create wiki-data
+docker run --name solo-wiki -v wiki-data:/wiki-data -p 8000:80 -d mediawiki
+docker exec -i solo-wiki bash
+
+##Dowload nano
+apt update
+apt install nano
+
+##Remove nano
+apt remove nano
+
+##Commit a container image
+docker commit solo-wiki solo-wiki
+
+##Create a wiki-net user-defined network
+docker network create -d bridge wiki-net
+
+##Create a wiki mysql container with a user-defined network wiki-net
+docker run --name wiki-mysql --network=wiki-net -v wiki-data:/var/lib/mysql -d -e MYSQL_ROOT_PASSWORD=root mysql
+

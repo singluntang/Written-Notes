@@ -1,0 +1,102 @@
+##To find an IP address of a container
+
+docker inspect --format='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 671ef68b2fcb
+
+##High Level look of Docker Network
+
+docker network ls
+
+##Running And Creating a new Container (*Note: an image will also be created)
+
+docker container run alpine echo hello world
+
+##Listing all Containers
+
+docker container ls -a
+
+##Listing the active running Container
+
+docker container ls
+
+##Starting a Container
+
+docker container start 671ef68b2fcb 
+
+##Stopping a Container
+
+docker container stop 671ef68b2fcb 
+
+##Inspecting a Container from the Host system perspective (Usefull if looking for process id)
+
+docker container top 671ef68b2fcb 
+
+##Inspecting a Container from the container perspective (Usefull if looking for process id)
+
+docker container exec 671ef68b2fcb ps 
+
+##Removing Containers
+
+docker container rm 671ef68b2fcb
+
+##Listing all Container Images
+
+docker image ls
+
+##Removing Container Image(s)
+
+docker image rm 7e1a04840362 
+
+##Build a Container Image and run or create a new Container through a Dockerfile
+##Please not the footstop/period at the end means current directory where the Dockerfile is located.
+##The -t is a namming tag
+
+docker image build -t curler .
+
+##Login to Docker hub
+
+docker login
+
+##Working inside the Container by using bash shell
+
+docker exec -it 671ef68b2fcb /bin/bash
+
+##Creating an image or snapshot of a running Container
+
+docker commit -m "First Commit" 671ef68b2fcb d6:1.0
+
+##Tagging/Namming a Container for pushing to Docker Hub
+##<Your Docker ID> is your login username
+
+docker tag d6:1.0 <Your Docker ID>/d6:1.0
+
+##Pushing or deploying your container image to Docker Hub
+
+docker push <Your Docker ID>/d6:1.0
+
+##Create a volume (storage) for persisting data
+
+docker volume create d6app
+
+##Create a new container and mount to a volume and accessing inside the container's bash shell
+##The below command create a new container, if no container image is found, it will be download
+##from your docker hub repository.
+##The -v parameter specify the volume, the value before the colon specify the volume to be mount,
+##the value after the colon specify the directory of the volume, that is where the data will be persists, you can call any name as you like.
+##The -it parameter means interactive shell.
+##For the stake of security, if you want the volume's directory to be mount for just read-only, you can specify: d6app:/d6app:ro (where ro means read-only)
+
+docker run --name d6v2 -it -v d6app:/d6app <Your Docker ID>/d6:1.0 bash
+
+##The -p parameter specify the port mapping 
+##The value on the left side specify the host (window os) port
+##The value on the right side specify the container port
+
+docker run --name nginx-test -d -p 8000:80 nginx
+
+##Create a user defined network
+docker network create -d bridge wiki-net
+
+
+
+
+
